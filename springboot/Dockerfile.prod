@@ -1,0 +1,25 @@
+#######################
+##       Develop     ##
+#######################
+
+# For production, we only need to use the jre image, so we can reduce the image size by not using jdk
+FROM openjdk:11 as production
+
+WORKDIR /camel
+
+# Copy the POM.XML  - this part comes first due the inmutable (almost none) state of this file
+COPY pom.xml .
+
+# Copy the mvnw
+COPY mvnw .
+COPY .mvn .mvn
+
+RUN chmod 700 mvnw
+
+RUN ./mvnw dependency:go-offline
+
+COPY ./src ./src
+
+EXPOSE 8080
+
+RUN ./mvnw clean install -DskipTests

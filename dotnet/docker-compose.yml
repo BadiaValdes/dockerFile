@@ -1,0 +1,32 @@
+version: '3.7'
+
+services:
+  ms-interview:
+        container_name: ms-interview
+        image: ms-interview:0.0.1
+        build:
+            context: .
+            dockerfile: Dockerfile
+            target: build
+        ports:
+            - 3011:5000
+        environment:
+            - DOTNET_ENVIRONMENT=production
+            - ASPNETCORE_URLS=http://+:5000
+            - DATABASE_NAME=interview
+            - DATABASE_HOST=mongodb://root:example@host.docker.internal:27018
+            - NATS_HOST=nats://host.docker.internal:4222
+            - API_GATEWAY_HOST=http://host.docker.internal:8761/eureka
+            - MINIO_HOST=host.docker.internal:9000
+            - MINIO_SECRET=sSuNHd9yphMx30277F8aE8ag9wBX8rRN
+            - MINIO_KEY=lnYE2lV5srV5zt1f
+            - MINIO_BUCKET=net-test
+        tty: true   
+        working_dir: /app
+        volumes:
+            - ./:/app
+
+        # interview:interview@
+
+volumes:
+    local:

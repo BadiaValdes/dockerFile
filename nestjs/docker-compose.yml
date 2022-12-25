@@ -1,0 +1,17 @@
+version: '3.7'
+
+services:
+  ms-security-dev:
+        container_name: ms-security-dev
+        image: ms-security:0.1.0
+        build:
+            context: .
+            target: builder
+        ports:
+            - 3003:3000
+        tty: true
+        working_dir: /home/node/app
+        volumes:
+            - ./:/home/node/app
+            - /home/node/app/node_modules
+

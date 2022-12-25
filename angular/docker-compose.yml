@@ -1,0 +1,19 @@
+version: '3.7'
+
+services:
+  preswin-frontend:
+    container_name: preswin-frontend
+    image: preswin-frontend:dev
+    restart: always
+    build:
+        context: .
+        target: installer
+    ports:
+    #- "8080:80"
+      - "8501:4200"
+    tty: true
+    working_dir: /home/node/app
+    volumes:
+      - .:/home/node/app
+      - /home/node/app/node_modules
+
