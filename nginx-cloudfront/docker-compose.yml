@@ -1,0 +1,17 @@
+version: '3.9'
+
+#############################################################
+#                  NGINX Deployment                          #
+#############################################################
+services:
+  nginx-cloudfront:
+    image: nginx
+    hostname: cloudfront
+    container_name: cloudfront
+    volumes:
+      - ./templates:/etc/nginx/templates
+    environment:
+      - MINION_URL=http://host.docker.internal
+      - MINION_PORT=9000
+    ports:
+      - "80:80"

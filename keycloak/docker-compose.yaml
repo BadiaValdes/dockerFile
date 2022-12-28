@@ -1,0 +1,41 @@
+version: '3.9'
+
+services:
+
+##############################################################
+#                   KeyCloak Deployment                      #
+#                   URL: http://localhost:8080/             #
+############################################################## 
+    keycloakdb:
+        image: postgres:15.1-alpine
+        container_name: postgrekc-solintecno
+        volumes:
+        - ./postgres/scripts/:/docker-entrypoint-initdb.d/                   
+        - db_datap:/var/lib/postgresql/data
+        environment:
+            POSTGRES_USER: ${POSTGRES_USER}
+            POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}   
+            APP_DB_USER: ${APP_DB_USER}   
+            APP_DB_PASS: ${APP_DB_PASS}   
+            APP_DB_NAME: ${APP_DB_NAME}   
+        ports:
+            - "5432:5432"                   
+    keycloak:
+        image: quay.io/keycloak/keycloak:latest
+        container_name: keycloak-solintecno
+        environment:
+            KC_DB: ${KC_DB}
+            KC_DB_URL: jdbc:postgresql://keycloakdb:5432/${APP_DB_NAME}  
+            KC_DB_SCHEMA: public
+            KC_DB_USERNAME: ${APP_DB_USER}
+            KC_DB_PASSWORD: ${APP_DB_PASS}
+            KEYCLOAK_ADMIN: ${KEYCLOAK_USER}
+            KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_PASSWORD}
+        ports:
+            - 8080:8080
+        depends_on:
+            - keycloakdb  
+        command:
+            - start-dev --auto-build             
+volumes:
+    db_datap:

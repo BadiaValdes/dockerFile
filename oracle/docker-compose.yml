@@ -1,0 +1,19 @@
+version: '3.7'
+
+services:
+  oracle12c:
+    image: docker.uclv.cu/oracledb19c/oracle.19.3.0-ee:oracle19.3.0-ee
+    ports:
+      - 7877:1521
+      - 8878:5500
+    environment:
+      - ORACLE_SID=ORCLCDB
+      - ORACLE_PDB=ORCLPDB1
+      - ORACLE_PWD=oracle
+    volumes:
+      - oracleDB:/opt/oracle/oradata
+
+
+volumes:
+  oracleDB:
+    
